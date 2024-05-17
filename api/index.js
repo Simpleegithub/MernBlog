@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 dotenv.config({ path: "./config.env" });
+const UserRoutes=require('./routes/UserRoute');
 // require('dotenv').config();
 const DB = process.env.DATABASE.replace("<password>", "Choa%40992");
 
@@ -14,6 +15,20 @@ mongoose
 
 const app = express();
 
+
+
+
+// routes
+app.use('/api/user',UserRoutes);
+
+
+
+
+
+
 app.listen(process.env.PORT, (req, res) => {
   console.log("App is listening on Port 3000");
 });
+
+
+
