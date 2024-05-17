@@ -5,6 +5,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { FaMoon } from 'react-icons/fa';
 
+
 function Header() {
     const location = useLocation(); // Use useLocation to get the location object
 
@@ -36,7 +37,7 @@ function Header() {
                 </Button>
 
                 <Link to='/sign-in'>
-                    <Button className='' gradientDuoTone='purpleToBlue'>
+                    <Button className='' gradientDuoTone='purpleToBlue' outline>
                         Sign In
                     </Button>
                 </Link>
