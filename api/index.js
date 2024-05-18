@@ -24,8 +24,22 @@ app.use(express.json())
 // routes
 app.use('/api/user',UserRoutes);
 
-app.use('/api/auth',AuthRoutes)
+app.use('/api/auth',AuthRoutes);
 
+
+//global Error handler Middle ware
+
+app.use((err,req,res,next)=>{
+  const statusCode=err.statusCode||500;
+  const message=err.message||'Internal server error';
+
+  res.status(statusCode).json({
+    success:false,
+    statusCode,
+    message
+
+  })
+})
 
 
 
