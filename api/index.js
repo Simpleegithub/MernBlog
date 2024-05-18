@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 dotenv.config({ path: "./config.env" });
 const UserRoutes=require('./routes/UserRoute');
+const AuthRoutes=require('./routes/AuthRoute');
 // require('dotenv').config();
 const DB = process.env.DATABASE.replace("<password>", "Choa%40992");
 
@@ -15,11 +16,15 @@ mongoose
 
 const app = express();
 
+app.use(express.json())
+
 
 
 
 // routes
 app.use('/api/user',UserRoutes);
+
+app.use('/api/auth',AuthRoutes)
 
 
 
