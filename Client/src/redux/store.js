@@ -3,6 +3,8 @@ import Userslice from "./users/Userslice";
 import storage from 'redux-persist/lib/storage'
 import {persistReducer,} from 'redux-persist';
 import { combineReducers } from "@reduxjs/toolkit";
+import themeSlice from "./theme/themeSlice";
+
 
 
 
@@ -14,7 +16,8 @@ storage
 }
 
 const reducer=combineReducers({
-  user:Userslice
+  user:Userslice,
+  theme:themeSlice
 })
 
 

@@ -2,7 +2,7 @@
 
 import { Button } from "flowbite-react"
 import { AiFillGoogleCircle } from "react-icons/ai";
-import {GoogleAuthProvider, getAuth, signInWithPopup} from 'firebase/auth'
+import {GoogleAuthProvider, getAuth, signInWithPopup} from 'firebase/auth';
 import { app } from "../firebase";
 import { useDispatch } from "react-redux";
 import { signInSuccess } from "../redux/users/Userslice";
@@ -25,7 +25,7 @@ function OAuth() {
             body:JSON.stringify({
                 name:resultsFromGoogle.user.displayName,
                 email:resultsFromGoogle.user.email,
-                googlePhotoURL:resultsFromGoogle.user.photoURL
+                profilePicture:resultsFromGoogle.user.photoURL
 
 
             })

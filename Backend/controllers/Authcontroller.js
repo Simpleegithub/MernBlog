@@ -72,7 +72,7 @@ exports.signIn = async (req, res, next) => {
 };
 
 exports.google = async (req, res, next) => {
-  const { name, email, googlePhotoURL } = req.body;
+  const { name, email, profilePicture } = req.body;
 
   try {
     // check if user exists
@@ -101,7 +101,7 @@ exports.google = async (req, res, next) => {
           Math.random().toString(9).slice(-4),
         email,
         password: hashedPassword,
-        profilePicture: googlePhotoURL,
+        profilePicture,
       });
       await newUser.save();
       const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {

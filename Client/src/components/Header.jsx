@@ -3,10 +3,15 @@ import React from 'react';
 import { Avatar, Button, Dropdown, DropdownHeader, Navbar, TextInput } from 'flowbite-react';
 import { Link, useLocation } from 'react-router-dom';
 import { AiOutlineSearch } from 'react-icons/ai';
-import { FaMoon } from 'react-icons/fa';
-import { useSelector } from "react-redux";
+import { FaMoon,FaSun } from 'react-icons/fa';
+import { useDispatch, useSelector } from "react-redux";
+import { toggletheme } from '../redux/theme/themeSlice';
+
+
 
 function Header() {
+    const {theme}=useSelector((state)=>state.theme);
+    const dispatch=useDispatch();
     const { currentUser } = useSelector((state) => state.user);
     if(currentUser){
         console.log(currentUser)
@@ -38,7 +43,8 @@ function Header() {
 
             <div className='flex gap-2 md:order-2'>
                 <Button className='w-12 h-10 hidden sm:inline' color='gray' pill>
-                    <FaMoon />
+
+                  {theme==='light' ?  <FaSun onClick={()=>dispatch(toggletheme())} /> :<FaMoon onClick={()=>dispatch(toggletheme())} />}
                 </Button>
                 {currentUser ? (
                     <Dropdown
