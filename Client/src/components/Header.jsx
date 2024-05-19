@@ -1,12 +1,17 @@
 /* eslint-disable */
 import React from 'react';
-import { Button, Navbar, TextInput } from 'flowbite-react';
+import { Avatar, Button, Dropdown, DropdownHeader, Navbar, TextInput } from 'flowbite-react';
 import { Link, useLocation } from 'react-router-dom';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { FaMoon } from 'react-icons/fa';
-
+import { useSelector } from "react-redux";
 
 function Header() {
+    const { currentUser } = useSelector((state) => state.user);
+    if(currentUser){
+        console.log(currentUser)
+
+    }
     const location = useLocation(); // Use useLocation to get the location object
 
     return (
@@ -35,12 +40,33 @@ function Header() {
                 <Button className='w-12 h-10 hidden sm:inline' color='gray' pill>
                     <FaMoon />
                 </Button>
+                {currentUser ? (
+                    <Dropdown
+                        arrowIcon={false}
+                        inline
+                        label={<Avatar alt='user' img={currentUser.user.profilePicture} rounded />}
+                    >
+                        <DropdownHeader>
+                            <span className='block text-sm'>@{currentUser.user.username}</span>
+                            <span className='block text-sm  font-medium truncate'>{currentUser.user.email}</span>
+                        </DropdownHeader>
+                        <Link to='/dashboard?tab=profile'>
+                            <Dropdown.Item>Profile</Dropdown.Item>
 
-                <Link to='/sign-in'>
-                    <Button className='' gradientDuoTone='purpleToBlue' outline>
-                        Sign In
-                    </Button>
-                </Link>
+                        </Link>
+                        <Dropdown.Divider/>
+                        <Dropdown.Item>Sign out</Dropdown.Item>
+
+
+                    </Dropdown>
+                ) : (
+                    <Link to='/sign-in'>
+                        <Button className='' gradientDuoTone='purpleToBlue' outline>
+                            Sign In
+                        </Button>
+                    </Link>
+                )}
+
                 <Navbar.Toggle />
             </div>
 
