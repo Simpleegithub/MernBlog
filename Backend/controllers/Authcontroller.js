@@ -45,7 +45,7 @@ exports.signIn = async (req, res, next) => {
     if (!validUser) {
       return next(ErrorHandler(404, "User not Found"));
     }
-    const validPassword =  await bcrypt.compare(password, validUser.password);
+    const validPassword = await bcrypt.compare(password, validUser.password);
     if (!validPassword) {
       return next(ErrorHandler(401, "Invalid password"));
     }
@@ -57,13 +57,59 @@ exports.signIn = async (req, res, next) => {
       expiresIn: "90d",
     });
 
-    res.status(200).cookie('access_token',token,{
-        httpOnly:true
-    }).json({
-        message:"successful login",
-        validUser
-    })
+    res
+      .status(200)
+      .cookie("access_token", token, {
+        httpOnly: true,
+      })
+      .json({
+        message: "successful login",
+        validUser,
+      });
   } catch (err) {
     next(err);
+  }
+};
+
+exports.google = async (req, res, next) => {
+  const { name, email, googlePhotoURL } = req.body;
+
+  try {
+    // check if user exists
+    const user = await User.findOne({ email });
+    if (user) {
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+        expiresIn: "90d",
+      });
+
+      res
+        .status(200)
+        .cookie("access_token", token, {
+          httpOnly: true,
+        })
+        .json({
+          message: "successful login",
+          user,
+        });
+    } else {
+      const generatedPassword = Math.random().toString(36).slice(-8);
+      const hashedPassword = await bcrypt.hash(generatedPassword, 10);
+
+      const newUser =  new User({
+        username:
+          name.toLowerCase().split("").join("") +
+          Math.random().toString(9).slice(-4),
+        email,
+        password: hashedPassword,
+        profilePicture: googlePhotoURL,
+      });
+      await newUser.save();
+      const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
+        expiresIn: "90d",
+      });
+      res.status(200).cookie('access-token',token,{httpOnly:true}).json({newUser})
+    }
+  } catch (err) {
+   return next(err)
   }
 };

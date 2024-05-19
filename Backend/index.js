@@ -27,6 +27,7 @@ app.use('/api/user',UserRoutes);
 app.use('/api/auth',AuthRoutes);
 
 
+
 //global Error handler Middle ware
 
 app.use((err,req,res,next)=>{
