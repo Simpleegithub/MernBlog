@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 dotenv.config({ path: "./config.env" });
 const UserRoutes=require('./routes/UserRoute');
 const AuthRoutes=require('./routes/AuthRoute');
+const cookieParser=require('cookie-parser')
 // require('dotenv').config();
 const DB = process.env.DATABASE.replace("<password>", "Choa%40992");
 
@@ -16,7 +17,8 @@ mongoose
 
 const app = express();
 
-app.use(express.json())
+app.use(express.json());
+app.use(cookieParser())
 
 
 
@@ -25,6 +27,8 @@ app.use(express.json())
 app.use('/api/user',UserRoutes);
 
 app.use('/api/auth',AuthRoutes);
+
+
 
 
 

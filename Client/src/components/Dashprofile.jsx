@@ -18,6 +18,7 @@ function Dashprofile() {
   const [imagefileuploadprogress,setImageFileUploadProgress]=useState(null);
   const[imagefileuploaderror,setImageFileuploadError]=useState(null);
  console.log(imagefileuploadprogress,imagefileuploaderror)
+ 
   const handleImageChange=(e)=>{
     const file=e.target.files[0];
     if(file){
@@ -79,7 +80,7 @@ function Dashprofile() {
     <h1 className='my-7 text-center font-semibold text-3xl'>Profile</h1>
     <form className='flex flex-col gap-4'>
 
-        <input type="file" accept="image/*" onChange={handleImageChange} ref={filePickerRef} hidden/>
+    <input type="file" accept="image/*" onChange={handleImageChange} ref={filePickerRef} hidden/>
 
       <div className=' relative w-32 h-32 self-center cursor-pointer shadow-md overflow-hidden rounded-full' onClick={()=>filePickerRef.current.click()}>
 
