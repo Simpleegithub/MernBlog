@@ -18,7 +18,7 @@ exports.signup = async (req, res, next) => {
 
   const hashedPassword = bcrypt.hashSync(password, 10);
   try {
-    const newUser = await User.create({
+    const user = await User.create({
       username: username,
       email: email,
       password: hashedPassword,
@@ -26,7 +26,7 @@ exports.signup = async (req, res, next) => {
 
     res.status(201).json({
       message: "success",
-      newUser,
+      user,
     });
   } catch (err) {
     next(err);
@@ -73,6 +73,7 @@ exports.signIn = async (req, res, next) => {
 
 exports.google = async (req, res, next) => {
   const { name, email, profilePicture } = req.body;
+  console.log(profilePicture)
 
   try {
     // check if user exists
@@ -95,7 +96,7 @@ exports.google = async (req, res, next) => {
       const generatedPassword = Math.random().toString(36).slice(-8);
       const hashedPassword = await bcrypt.hash(generatedPassword, 10);
 
-      const newUser =  new User({
+      const user =  new User({
         username:
           name.toLowerCase().split("").join("") +
           Math.random().toString(9).slice(-4),
@@ -103,11 +104,14 @@ exports.google = async (req, res, next) => {
         password: hashedPassword,
         profilePicture,
       });
-      await newUser.save();
-      const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
+      await user.save();
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
         expiresIn: "90d",
       });
-      res.status(200).cookie('access-token',token,{httpOnly:true}).json({newUser})
+      res.status(200).cookie('access-token',token,{httpOnly:true}).json({
+        message:"success",
+        user
+      })
     }
   } catch (err) {
    return next(err)

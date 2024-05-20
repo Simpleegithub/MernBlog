@@ -33,6 +33,7 @@ function OAuth() {
         });
 
         const data=await res.json();
+        console.log(data,'from line 36')
         if(res.ok){
             dispatch(signInSuccess(data))
             navigate('/');
