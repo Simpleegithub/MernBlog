@@ -1,20 +1,23 @@
 /*eslint-disable*/
 
-import { Alert, Button, TextInput } from "flowbite-react";
+import { Alert, Button, Modal, TextInput } from "flowbite-react";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {getDownloadURL, getStorage, ref, uploadBytesResumable} from 'firebase/storage';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+import { useNavigate } from "react-router-dom";
+import {HiOutlineExclamationCircle} from 'react-icons/hi'
 
 import { app } from "../firebase";
 
-import { signInFailure, signInSuccess, updateFailure, updateStart, updateSuccess } from "../redux/users/Userslice";
+import { signInFailure, signInSuccess, signOutSuccess, updateFailure, updateStart, updateSuccess,userDeleteFailure, userDeleteStart, userDeleteSuccess } from "../redux/users/Userslice";
+import { Model } from "mongoose";
 
 function Dashprofile() {
     const filePickerRef=useRef();
 
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser,error } = useSelector((state) => state.user);
   const [imagefile, setImageFile] = useState(null);
   const[imageFileUrl,setImageFileUrl]=useState(null);
   const [imagefileuploadprogress,setImageFileUploadProgress]=useState(null);
@@ -24,8 +27,60 @@ function Dashprofile() {
   const [formdata,setFormData]=useState({});
   const[updateUsererror,setUpdateUserError]=useState(null);
   const dispatch=useDispatch();
+  const navigate=useNavigate();
+  const [showModel,setShowModel]=useState(false);
+
+ 
  console.log(imagefileuploadprogress,imagefileuploaderror);
  console.log(currentUser)
+
+
+ const handleSignOUt=async()=>{
+  try{
+   const res=await fetch(`api/user/signout`,{
+    method:"POST"
+   })
+   const data=await res.json();
+   if(!res.ok){
+    console.log(data.message)
+   }else{
+    dispatch(signOutSuccess())
+   }
+
+  }catch(error){
+  console.log(error.message)
+  }
+ }
+
+const handleDelete= async()=>{
+  setShowModel(false)
+  try{
+    dispatch(userDeleteStart())
+   const res= await fetch(`api/user/delete/${currentUser.user._id}`,{
+    method:"DELETE",
+    
+   
+
+   })
+   const data=await res.json();
+
+   if(!res.ok){
+    dispatch(userDeleteFailure(error.message))
+  
+  }
+
+   if(res.ok){
+     dispatch(userDeleteSuccess(data))
+    navigate('/sign-in');
+   }
+
+  } catch(error){
+  // console.log(error.message);
+  dispatch(userDeleteFailure(error.message))
+  }
+}
+
+
 
  const handleChange=(e)=>{
   setFormData({...formdata,[e.target.id]:e.target.value});
@@ -192,8 +247,8 @@ function Dashprofile() {
       </Button>
     </form>
     <div className="text-red-500 flex justify-between mt-5">
-      <span className='cursor-pointer'>Delete Account</span>
-      <span className='cursor-pointer'>Sign Out</span>
+      <span className='cursor-pointer' onClick={()=>setShowModel(true)}>Delete Account</span>
+      <span className='cursor-pointer' onClick={handleSignOUt}>Sign Out</span>
     </div>
     {updateUserSuccess && (
     <Alert color='success' className="mt-5" >
@@ -206,6 +261,26 @@ function Dashprofile() {
       {updateUsererror}
        </Alert>
     )}
+
+{error && (
+    <Alert color='failure' className="mt-5" >
+      {error}
+       </Alert>
+    )}
+
+    <Modal show={showModel} onClose={()=>setShowModel(false)} popup size='md'>
+   <Modal.Header/>
+   <Modal.Body>
+    <div className="text-center">
+     <HiOutlineExclamationCircle className="h-14 w-14 text-gray-400 dark:text-gray-200 mb-4 mx-auto"/>
+     <h3 className="mb-5 text-lg text-gray-500 dark:text-gray-400">Are you sure you want to delete this account ?</h3>
+     <div className="flex  justify-center gap-4">
+     <Button className="" color='failure' onClick={handleDelete}>Yes I'm sure</Button>
+     <Button className="" color='gray' onClick={()=>setShowModel(false)}>No, cancel</Button>
+     </div>
+    </div>
+   </Modal.Body>
+      </Modal>
   </div>
   );
 }

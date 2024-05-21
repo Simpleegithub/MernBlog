@@ -64,7 +64,7 @@ exports.signIn = async (req, res, next) => {
       })
       .json({
         message: "successful login",
-        validUser,
+        user:validUser
       });
   } catch (err) {
     next(err);
@@ -73,47 +73,49 @@ exports.signIn = async (req, res, next) => {
 
 exports.google = async (req, res, next) => {
   const { name, email, profilePicture } = req.body;
-  console.log(profilePicture)
 
   try {
-    // check if user exists
-    const user = await User.findOne({ email });
+    // Check if user exists
+    let user = await User.findOne({ email });
+
     if (user) {
+      // User exists, generate token
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
         expiresIn: "90d",
       });
 
-      res
-        .status(200)
-        .cookie("access_token", token, {
-          httpOnly: true,
-        })
+      res.status(200)
+        .cookie("access_token", token, { httpOnly: true })
         .json({
-          message: "successful login",
+          message: "Successful login",
           user,
         });
     } else {
+      // User does not exist, create user
       const generatedPassword = Math.random().toString(36).slice(-8);
       const hashedPassword = await bcrypt.hash(generatedPassword, 10);
 
-      const user =  new User({
-        username:
-          name.toLowerCase().split("").join("") +
-          Math.random().toString(9).slice(-4),
+      user = new User({
+        username: name.toLowerCase().replace(/\s/g, '') + Math.random().toString(9).slice(-4),
         email,
         password: hashedPassword,
         profilePicture,
       });
+
       await user.save();
+
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
         expiresIn: "90d",
       });
-      res.status(200).cookie('access-token',token,{httpOnly:true}).json({
-        message:"success",
-        user
-      })
+
+      res.status(200)
+        .cookie('access_token', token, { httpOnly: true })
+        .json({
+          message: "Success",
+          user,
+        });
     }
   } catch (err) {
-   return next(err)
+    return next(err);
   }
 };

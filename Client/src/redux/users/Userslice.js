@@ -38,13 +38,39 @@ export const Userslice=createSlice({
         updateFailure:(state,action)=>{
           state.loading=false,
           state.error=action.payload
+        },
+
+        userDeleteStart:(state)=>{
+            state.loading=true,
+            state.error=null
+        },
+
+        userDeleteSuccess:(state)=>{
+            state.loading=false,
+            state.currentUser=null,
+            state.error=null
+        },
+
+        userDeleteFailure:(state,action)=>{
+            state.loading=false,
+            state.error=action.payload
+
+        
+        },
+
+        signOutSuccess:(state)=>{
+            state.currentUser=null,
+            state.error=null,
+            state.loading=false
         }
+
+
     }
 
     
 
 })
 
-export const {signInStart,signInSuccess,signInFailure,updateStart,updateFailure,updateSuccess}=Userslice.actions
+export const {signInStart,signInSuccess,signInFailure,updateStart,updateFailure,updateSuccess,userDeleteStart,userDeleteSuccess,userDeleteFailure,signOutSuccess}=Userslice.actions
 
 export default Userslice.reducer;
