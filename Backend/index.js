@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 dotenv.config({ path: "./config.env" });
 const UserRoutes=require('./routes/UserRoute');
 const AuthRoutes=require('./routes/AuthRoute');
+const PostRoutes=require('./routes/PostRoute')
 const cookieParser=require('cookie-parser')
 // require('dotenv').config();
 const DB = process.env.DATABASE.replace("<password>", "Choa%40992");
@@ -27,6 +28,8 @@ app.use(cookieParser())
 app.use('/api/user',UserRoutes);
 
 app.use('/api/auth',AuthRoutes);
+
+app.use('/api/post',PostRoutes);
 
 
 
