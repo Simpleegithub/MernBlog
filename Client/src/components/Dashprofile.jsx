@@ -84,7 +84,7 @@ const handleDelete= async()=>{
 
  const handleChange=(e)=>{
   setFormData({...formdata,[e.target.id]:e.target.value});
-  console.log(formdata)
+  console.log(formdata,'from dashprofile')
  }
 
  const handleSubmit=async (e)=>{
