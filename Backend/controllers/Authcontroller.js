@@ -53,7 +53,7 @@ exports.signIn = async (req, res, next) => {
     // Remove password from validUser object
     validUser.password = undefined;
 
-    const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ id: validUser._id,isAdmin:validUser.isAdmin }, process.env.JWT_SECRET, {
       expiresIn: "90d",
     });
 
@@ -80,7 +80,7 @@ exports.google = async (req, res, next) => {
 
     if (user) {
       // User exists, generate token
-      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      const token = jwt.sign({ id: user._id,isAdmin:user.isAdmin }, process.env.JWT_SECRET, {
         expiresIn: "90d",
       });
 
@@ -104,7 +104,7 @@ exports.google = async (req, res, next) => {
 
       await user.save();
 
-      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      const token = jwt.sign({ id: user._id,isAdmin:user.isAdmin }, process.env.JWT_SECRET, {
         expiresIn: "90d",
       });
 

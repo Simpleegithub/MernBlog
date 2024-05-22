@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {getDownloadURL, getStorage, ref, uploadBytesResumable} from 'firebase/storage';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {HiOutlineExclamationCircle} from 'react-icons/hi'
 
 import { app } from "../firebase";
@@ -17,7 +17,7 @@ import { Model } from "mongoose";
 function Dashprofile() {
     const filePickerRef=useRef();
 
-  const { currentUser,error } = useSelector((state) => state.user);
+  const { currentUser,error,loading } = useSelector((state) => state.user);
   const [imagefile, setImageFile] = useState(null);
   const[imageFileUrl,setImageFileUrl]=useState(null);
   const [imagefileuploadprogress,setImageFileUploadProgress]=useState(null);
@@ -242,9 +242,16 @@ const handleDelete= async()=>{
        onChange={handleChange}
       />
       <TextInput type='password' id='password' placeholder='password' onChange={handleChange}  />
-      <Button type='submit' gradientDuoTone='purpleToBlue' outline>
-          Update
+      <Button type='submit' gradientDuoTone='purpleToBlue' outline disabled={loading || imageFileuploading}>
+          {loading?'loading...':'update'}
       </Button>
+      {
+        currentUser.user.isAdmin &&(
+          <Link to='/create-post'>
+          <Button type="button" gradientDuoTone='purpleToPink' className="w-full">Create a Post</Button>
+          </Link>
+        )
+      }
     </form>
     <div className="text-red-500 flex justify-between mt-5">
       <span className='cursor-pointer' onClick={()=>setShowModel(true)}>Delete Account</span>
