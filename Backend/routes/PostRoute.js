@@ -6,5 +6,6 @@ const router=express.Router();
 
 
 router.post('/create',verifyToken,PostController.create);
+router.get('/getposts',PostController.getposts)
 
 module.exports= router;

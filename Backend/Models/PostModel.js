@@ -27,7 +27,7 @@ slug:{
     required:true,
     unique:true
 }
-},{timestamp:true})
+},{timestamps:true})
 
 const Post=mongoose.model('Post',PostSchema);
 
