@@ -1,6 +1,7 @@
 const Post = require("../Models/PostModel");
 const { ErrorHandler } = require("../utils/Error");
 
+
 exports.create = async (req, res, next) => {
     // Check if the user is an admin
     if (!req.user.isAdmin) {
@@ -13,7 +14,7 @@ exports.create = async (req, res, next) => {
     }
 
     // Generate slug from title
-    const slug = req.body.title.toLowerCase().trim().replace(/[^a-z0-9]+/g, '');
+    const slug = req.body.title.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-');
 
     // Create a new post instance
     const newPost = new Post({
