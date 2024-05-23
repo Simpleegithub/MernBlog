@@ -6,6 +6,7 @@ const router=express.Router();
 
 
 router.post('/create',verifyToken,PostController.create);
-router.get('/getposts',PostController.getposts)
+router.get('/getposts',PostController.getposts);
+router.delete('/delete/:id',verifyToken,PostController.deletePost)
 
 module.exports= router;

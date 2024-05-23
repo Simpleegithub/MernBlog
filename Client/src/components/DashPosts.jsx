@@ -54,6 +54,25 @@ function DashPosts() {
    }
   }
 
+  const handleDelete = async (id) => {
+    console.log(id);
+    try {
+      const res = await fetch(`api/post/delete/${id}`, {
+        method: "DELETE",
+      });
+  
+      if (res.ok) {
+        console.log('Post deleted successfully');
+        // Remove the deleted post from userPosts
+        setUserPost((prevPosts) => prevPosts.filter((post) => post._id !== id));
+      } else {
+        console.log('Failed to delete post:', res.statusText);
+      }
+    } catch (error) {
+      console.log('Error deleting post:', error);
+    }
+  };
+  
   return (
     <div className="table-auto  overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500">
       {currentUser.user.isAdmin && userPosts.length > 0 ? (
@@ -92,7 +111,7 @@ function DashPosts() {
                       <Link to={`/post/${post.slug}`}>{post.category}</Link>
                     </Table.Cell>
                     <Table.Cell>
-                      <span className="font-medium  text-red-500 hover:underline cursor-pointer">Delete</span>
+                      <span className="font-medium  text-red-500 hover:underline cursor-pointer" onClick={()=>handleDelete(post._id)}>Delete</span>
                     </Table.Cell>
                     <Table.Cell>
                     <Link to={`/update-post/${post._id}`} className=" text-teal-500 hover:underline">
