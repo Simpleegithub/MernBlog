@@ -18,7 +18,7 @@ const UserSchema=mongoose.Schema({
     },
     profilePicture:{
         type:String,
-        default:"https://lh3.googleusercontent.com/a/ACg8ocJfzN-vFtuSm444JCbRM0jMSHc24bVl4jvVkZnUq1O9VPm5YE4l=s96-c"
+        default:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkmx32A0fHBU7IiRKHsEM7xG6KHizAIpdfMA&usqp=CAU"
     },
     isAdmin:{
         type:Boolean,

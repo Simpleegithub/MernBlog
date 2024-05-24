@@ -80,7 +80,7 @@ exports.updateUser = async (req, res, next) => {
 
 exports.deleteUser=async(req,res,next)=>{
   console.log(req.user.id,req.params.id,'form line 82')
-  if (req.user.id !== req.params.id) {
+  if (!req.user.isAdmin) {
     return next(ErrorHandler(403, "You are not allowed to delete this user"));
   }
   try{

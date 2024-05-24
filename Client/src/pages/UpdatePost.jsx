@@ -102,7 +102,8 @@ export default function UpdatePost() {
 
       if (res.ok) {
         setPublishError(null);
-        navigate(`/post/${data.slug}`);
+        console.log(data,'from line 105')
+        navigate(`/post/${data.updatedPost.slug}`);
       }
     } catch (error) {
       setPublishError('Something went wrong');
