@@ -1,5 +1,6 @@
 const Post = require("../Models/PostModel");
 const { ErrorHandler } = require("../utils/Error");
+const User = require("../Models/UserModel");
 
 exports.create = async (req, res, next) => {
   // Check if the user is an admin
@@ -65,40 +66,59 @@ exports.getposts = async (req, res, next) => {
     );
 
     const lastMonthPosts = await Post.countDocuments({
-      updatedAt: { $gte: OneMonthAgo }
+      updatedAt: { $gte: OneMonthAgo },
     });
 
     res.status(200).json({
       posts,
       totalPosts,
-      lastMonthPosts
+      lastMonthPosts,
     });
-
   } catch (error) {
     next(error);
   }
 };
 
-
-exports.deletePost=async(req,res,next)=>{
-  if (!req.user.isAdmin) {
+exports.deletePost = async (req, res, next) => {
+  if (!req.user.isAdmin || req.user.id !== req.params.userId) {
     return next(ErrorHandler(403, "You are not allowed to delete a post"));
   }
-  console.log(req.params.id)
- const DeletedPost= await Post.findByIdAndDelete(req.params.id);
- if(!DeletedPost){
-  return next(ErrorHandler(404,'Post Not Found'))
- }
+
+  const DeletedPost = await Post.findByIdAndDelete(req.params.postId);
+  if (!DeletedPost) {
+    return next(ErrorHandler(404, "Post Not Found"));
+  }
 
   res.status(200).json({
-    'message':"Deleted Successfully",
-    DeletedPost
+    message: "Deleted Successfully",
+    DeletedPost,
   });
+};
 
+exports.updatePost = async (req, res, next) => {
+  if (!req.user.isAdmin || req.user.id !== req.params.userId) {
+    return next(ErrorHandler(403, "You are not allowed to update a post"));
+  }
 
+  try {
+    console.log("hello");
+    const updatedPost = await Post.findByIdAndUpdate(
+      req.params.postId,
+      {
+        title: req.body.title,
+        content: req.body.content,
+        category: req.body.category,
+        image: req.body.image,
+      },
+      { new: true }
+    );
 
+    res.status(200).json({
+      updatedPost,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
-
-
-}
 

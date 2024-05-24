@@ -57,7 +57,7 @@ function DashPosts() {
   const handleDelete = async (id) => {
     console.log(id);
     try {
-      const res = await fetch(`api/post/delete/${id}`, {
+      const res = await fetch(`api/post/delete/${id}/${currentUser.user._id}`, {
         method: "DELETE",
       });
   
