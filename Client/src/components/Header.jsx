@@ -71,10 +71,10 @@ function Header() {
                     <Dropdown
                         arrowIcon={false}
                         inline
-                        label={<Avatar alt='user' img={currentUser.user.profilePicture}  rounded />}
+                        label={<Avatar alt='user' img={currentUser.user?.profilePicture}  rounded />}
                     >
                         <DropdownHeader>
-                            <span className='block text-sm'>@{currentUser.user.username}</span>
+                            <span className='block text-sm'>@{currentUser.user?.username}</span>
                             <span className='block text-sm  font-medium truncate'>{currentUser.user.email}</span>
                         </DropdownHeader>
                         <Link to='/dashboard?tab=profile'>
