@@ -1,4 +1,4 @@
-import { Table, TableHead, TableRow } from "flowbite-react";
+import { Spinner, Table, TableHead, TableRow } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -8,16 +8,20 @@ function DashUsers() {
   const { currentUser } = useSelector((state) => state.user);
   const [users, setUsers] = useState([]);
   const [showMore, setShowMore] = useState(true);
+  const [loading,setLoading]=useState(false);
   console.log(users);
 
   useEffect(() => {
+    
     const fetchUsers = async () => {
       if (!currentUser || !currentUser.user._id) return; // Ensure currentUser is defined
       try {
+        setLoading(true);
         const res = await fetch(`/api/user/getusers`);
         const data = await res.json();
         console.log(data, "from line 20 user");
         if (res.ok) {
+          setLoading(false)
           setUsers(data.users);
           if (data.users.length < 9) {
             setShowMore(false);
@@ -72,6 +76,12 @@ function DashUsers() {
       console.log("Error deleting user:", error);
     }
   };
+
+  if(loading) return(
+    <div className=" flex justify-center items-center min-h-screen">
+    <Spinner size='xl' />
+    </div>
+)
 
   return (
     <div className="table-auto  overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500">

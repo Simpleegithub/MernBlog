@@ -1,4 +1,4 @@
-import { Table, TableHead, TableRow } from "flowbite-react";
+import { Spinner, Table, TableHead, TableRow } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -6,10 +6,12 @@ import { Link } from "react-router-dom";
 function DashPosts() {
   const { currentUser } = useSelector((state) => state.user);
   const [userPosts, setUserPost] = useState([]);
-  const [showMore,setShowMore]=useState(true)
+  const [showMore,setShowMore]=useState(true);
+  const[loading,setLoading]=useState(false);
   console.log(userPosts);
 
   useEffect(() => {
+    setLoading(true);
     const fetchPosts = async () => {
       if (!currentUser || !currentUser.user._id) return; // Ensure currentUser is defined
       try {
@@ -17,16 +19,23 @@ function DashPosts() {
           `/api/post/getposts?userId=${currentUser.user._id}`
         );
         const data = await res.json();
+      
         if (res.ok) {
           setUserPost(data.posts);
+          setLoading(false);
+         
           if(data.posts.length<9){
             setShowMore(false)
           }
         } else {
           console.log("Failed to fetch posts:", data.message);
+          setLoading(false)
         }
       } catch (error) {
         console.log("Error fetching posts:", error);
+          setLoading(false)
+
+
       }
     };
 
@@ -40,10 +49,12 @@ function DashPosts() {
    const startIndex=userPosts.length;
    console.log(startIndex,'form line 41')
    try{
+    setLoading(true);
    const res=await fetch(`api/post/getposts?userId=${currentUser.user._id}&startIndex=${startIndex}`)
    const data=await res.json();
    console.log(data,'from line 44')
    if(res.ok){
+     setLoading(true)
     setUserPost((prev)=>[...prev,...data.posts])
    }
     if(data.posts.length<9){
@@ -51,6 +62,7 @@ function DashPosts() {
     }
    } catch(error){
     console.log(error)
+    setLoading(false)
    }
   }
 
@@ -72,6 +84,13 @@ function DashPosts() {
       console.log('Error deleting post:', error);
     }
   };
+
+  
+  if(loading) return(
+    <div className=" flex justify-center items-center min-h-screen">
+    <Spinner size='xl' />
+    </div>
+)
   
   return (
     <div className="table-auto  overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500">

@@ -54,7 +54,7 @@ function DashSidebar() {
             </Sidebar.Item>
           </Link>
 
-          {currentUser.user.isAdmin && (
+          {currentUser && (
             <Link to="/dashboard?tab=posts">
               <Sidebar.Item
                 active={tab == "posts"}
