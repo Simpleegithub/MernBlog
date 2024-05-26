@@ -4,6 +4,7 @@ import { Alert, Button, Textarea } from "flowbite-react";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import Comment from './Comment';  // Ensure the Comment component is imported
+import { set } from 'mongoose';
 
 function CommentSection({ postId }) {
   const [comment, setComment] = useState("");
@@ -84,6 +85,11 @@ function CommentSection({ postId }) {
     }
   };
 
+  const handleEdit=async(comment,EditedContent)=>{
+
+    setComment((c)=>c._id===comment._id ? {...c,content:EditedContent}:c)
+  }
+
   return (
     <div className="max-w-2xl mx-auto w-full p-3">
       {currentUser ? (
@@ -148,7 +154,7 @@ function CommentSection({ postId }) {
           </div>
 
           {comments.map((comment) => (
-            <Comment key={comment._id} comment={comment} onLike={handleLike} />
+            <Comment key={comment._id} comment={comment} onLike={handleLike} onEdit={handleEdit} />
           ))}
         </>
       )}

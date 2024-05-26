@@ -7,6 +7,7 @@ const router=express.Router();
 router.post('/create',verifyToken,CommentController.create);
 router.get('/getPostComments/:postId',CommentController.getComment);
 router.post('/likeComment/:commentId',verifyToken,CommentController.likeComment)
+router.post('/editComment/:commentId',verifyToken,CommentController.editComment)
 
 
 module.exports=router;
