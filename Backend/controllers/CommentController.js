@@ -1,5 +1,8 @@
 const { ErrorHandler } = require("../utils/Error");
 const Comment=require('../Models/CommentsModel')
+
+
+
 exports.create=async(req,res,next)=>{
 
 try{
@@ -37,4 +40,27 @@ exports.getComment=async(req,res,next)=>{
     } catch(error){
         next(error)
     }
+}
+
+exports.likeComment=async(req,res,next)=>{
+try{
+    const comment=await Comment.findById(req.params.commentId);
+    if(!comment){
+        return next(ErrorHandler(404,'Comment Not Found'))
+    }
+
+    const userIndex=comment.likes.indexOf(req.user.id);
+    if(userIndex==-1){
+        comment.numberOflikes+=1,
+        comment.likes.push(req.user.id);
+    } else{
+        comment.numberOflikes-=1,
+        comment.likes.splice(userIndex,1);
+    }
+    await comment.save()
+    res.status(200).json(comment)
+
+} catch(error){
+
+}
 }
