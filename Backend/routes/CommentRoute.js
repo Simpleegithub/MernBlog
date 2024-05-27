@@ -8,6 +8,7 @@ router.post('/create',verifyToken,CommentController.create);
 router.get('/getPostComments/:postId',CommentController.getComment);
 router.post('/likeComment/:commentId',verifyToken,CommentController.likeComment)
 router.post('/editComment/:commentId',verifyToken,CommentController.editComment)
+router.delete('/deleteComment/:commentId',verifyToken,CommentController.deleteComment)
 
 
 module.exports=router;
