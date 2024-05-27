@@ -32,7 +32,7 @@ app.use('/api/auth',AuthRoutes);
 
 app.use('/api/post',PostRoutes);
 
-app.use('/api/comment',CommentRoute)
+app.use('/api/comment',CommentRoute);
 
 
 

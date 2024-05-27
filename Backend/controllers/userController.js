@@ -110,7 +110,7 @@ exports.signOut=(req,res,next)=>{
 
 
  exports.getUsers = async (req, res, next) => {
-  console.log("Hello from the users");
+
   if (!req.user.isAdmin) {
     return next(ErrorHandler(403, "You are not allowed to see the users"));
   }
