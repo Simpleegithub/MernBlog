@@ -30,7 +30,10 @@ function Header() {
 
             setSearchTerm(searchTermFoundUrl);
             console.log(searchTerm,'from line 32')
+    
         }
+
+      
         
         
     },[location.search])
@@ -83,6 +86,7 @@ function Header() {
                     className='hidden lg:inline'
                     value={searchTerm}
                     onChange={(e)=>setSearchTerm(e.target.value)}
+                    
                 />
             </form>
 
