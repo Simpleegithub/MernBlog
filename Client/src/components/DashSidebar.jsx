@@ -6,7 +6,7 @@ import {
   HiDocumentText,
   HiOutlineUserGroup,
   HiAnnotation,
-  HiChartPie,
+  HiChartPie
 } from "react-icons/hi";
 import { Link, useLocation } from "react-router-dom";
 import { signOutSuccess } from "../redux/users/Userslice";
