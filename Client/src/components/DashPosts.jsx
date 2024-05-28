@@ -26,6 +26,8 @@ function DashPosts() {
          
           if(data.posts.length<9){
             setShowMore(false)
+          } else{
+            setShowMore(true)
           }
         } else {
           console.log("Failed to fetch posts:", data.message);
@@ -54,7 +56,7 @@ function DashPosts() {
    const data=await res.json();
    console.log(data,'from line 44')
    if(res.ok){
-     setLoading(true)
+     setLoading(false)
     setUserPost((prev)=>[...prev,...data.posts])
    }
     if(data.posts.length<9){
