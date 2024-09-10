@@ -2,15 +2,18 @@ const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 dotenv.config({ path: "./config.env" });
-const UserRoutes=require('./routes/UserRoute');
-const AuthRoutes=require('./routes/AuthRoute');
-const PostRoutes=require('./routes/PostRoute');
-const CommentRoute=require('./routes/CommentRoute')
+const UserRoutes=require('./Backend/routes/UserRoute');
+const AuthRoutes=require('./Backend/routes/AuthRoute');
+const PostRoutes=require('./Backend/routes/PostRoute');
+const CommentRoute=require('./Backend/routes/CommentRoute')
 const cookieParser=require('cookie-parser')
+const path=require('path');
 // require('dotenv').config();
 const DB = process.env.DATABASE.replace("<password>", "Choa%40992");
 
-console.log(DB);
+// console.log(DB);
+
+// const __dirname = path.resolve();
 
 mongoose
   .connect(DB, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -33,6 +36,12 @@ app.use('/api/auth',AuthRoutes);
 app.use('/api/post',PostRoutes);
 
 app.use('/api/comment',CommentRoute);
+
+
+ app.use(express.static(path.join(__dirname, '/Client/dist')));
+ app.get('*', (req, res) => {
+   res.sendFile(path.resolve(__dirname, 'Client', 'dist', 'index.html'));
+ });
 
 
 
