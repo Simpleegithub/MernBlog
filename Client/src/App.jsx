@@ -11,7 +11,7 @@ import Footer from "./components/Footer";
 import PrivateRoute from "./components/PrivateRoute";
 import OnlyAdminPrivateRoute from "./components/OnlyAdminPrivateRoute";
 import CreatePost from "./pages/CreatePost";
-import UpdatePost from "./pages/updatePost";
+import UpdatePost from "./pages/UpdatePost";
 import PostPage from "./pages/PostPage";
 import ScrollToTop from "./components/ScrollToTop";
 import Search from "./pages/Search";
@@ -38,7 +38,7 @@ function App() {
           <Route path="/projects" element={<Projects />} />
           <Route path="/post/:postslug" element={<PostPage />} />
         </Routes>
-
+          
         <Footer />
       </BrowserRouter>
     </div>
