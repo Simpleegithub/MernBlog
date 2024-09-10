@@ -25,38 +25,35 @@ function CreatePost() {
 
  
 
-  const handlesubmit=async(e)=>{
-   e.preventDefault();
-   try{
-    const res=await fetch(`api/post/create`,{
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify(formdata)
-    })
+ const handlesubmit = async (e) => {
+  e.preventDefault();
+  
+  try {
+    const res = await fetch(`/api/post/create`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formdata),
+    });
 
-    // const data=await res.json();
-    console.log(res.data);
-    if(!res.ok){
-      setPublishError(data.message);
+    const data = await res.json(); // Parse the response JSON
+
+    if (!res.ok) {
+      setPublishError(data.message);  // Set error if request was not successful
       return;
     }
-    // if(data.success===false){
-    //   setPublishError(data.message);
-    //   return;
-    // }
 
-    if(res.ok){
-      setPublishError(null);
-      navigate(`/post/${data.slug}`)
+    // If the post creation is successful
+    if (res.ok) {
+      setPublishError(null); // Clear any existing errors
+      navigate(`/post/${data.slug}`); // Redirect to the created post using slug
     }
 
-
-
-
-   }catch(error){
-    setPublishError('Something went wrong!')
-   }
+  } catch (error) {
+    setPublishError('Something went wrong haha!'); // Catch and set any errors
+    console.error(error);
   }
+};
+
   
   const handleUpdloadImage = async () => {
     try {

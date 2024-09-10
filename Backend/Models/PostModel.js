@@ -13,6 +13,7 @@ title:{
     type:String,
     required:true,
   
+  
 },
 image:{
     type:String,
@@ -25,7 +26,7 @@ category:{
 slug:{
     type:String,
     required:true,
-    unique:true
+   
 }
 },{timestamps:true})
 

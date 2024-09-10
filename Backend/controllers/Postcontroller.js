@@ -3,6 +3,9 @@ const { ErrorHandler } = require("../utils/Error");
 const User = require("../Models/UserModel");
 
 exports.create = async (req, res, next) => {
+
+  const {title,category,image,content}=req.body;
+  console.log(req.user.id)
   // Check if the user is an admin
   if (!req.user.isAdmin) {
     return next(ErrorHandler(403, "You are not allowed to create a post"));
@@ -18,10 +21,14 @@ exports.create = async (req, res, next) => {
     .toLowerCase()
     .trim()
     .replace(/[^a-z0-9]+/g, "-");
+    console.log(slug)
 
   // Create a new post instance
   const newPost = new Post({
-    ...req.body,
+    title,
+    category,
+    image,
+    content,
     slug,
     userId: req.user.id,
   });
@@ -29,8 +36,11 @@ exports.create = async (req, res, next) => {
   try {
     // Save the new post to the database
     const savedPost = await newPost.save();
+    console.log(savedPost);
     res.status(201).json(savedPost);
   } catch (error) {
+    console.log("hello error");
+    console.log(error);
     next(error);
   }
 };
