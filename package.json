@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon backend/app.js"
+    "start": "nodemon backend/app.js",
+    "build":"npm install && npm install --prefix Client && npm run build --prefix Client" 
   },
   "author": "",
   "license": "ISC",
