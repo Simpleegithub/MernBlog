@@ -34,7 +34,8 @@ function CreatePost() {
       body:JSON.stringify(formdata)
     })
 
-    const data=await res.json();
+    // const data=await res.json();
+    console.log(res.data);
     if(!res.ok){
       setPublishError(data.message);
       return;
